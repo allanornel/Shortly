@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import authRouter from "./routes/authRouter.js";
 import urlRouter from "./routes/urlRouter.js";
+import userRouter from "./routes/userRouter.js";
 
 //express config
 const app = express();
@@ -14,6 +15,8 @@ dotenv.config();
 //routes
 app.use(authRouter);
 app.use(urlRouter);
+app.use(userRouter);
+
 // app.use(productRouter);
 // app.use(cartRouter);
 
