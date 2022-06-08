@@ -43,7 +43,7 @@ export async function getRanking(req, res) {
       }
     });
 
-    res.status(200).send(ranking);
+    res.status(200).send(resposta);
   } catch (e) {
     console.log(e);
     res.status(500).send("Ocorreu um erro ao obter o ranking");
