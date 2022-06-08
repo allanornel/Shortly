@@ -2,10 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
-// import productRouter from "./routes/productRouter.js";
-// import authRouter from "./routes/authRouter.js";
-// import headerRouter from "./routes/headerRouter.js";
-// import cartRouter from "./routes/cartRouter.js";
+import authRouter from "./routes/authRouter.js";
+import urlRouter from "./routes/urlRouter.js";
 
 //express config
 const app = express();
@@ -14,12 +12,12 @@ app.use(cors());
 dotenv.config();
 
 //routes
-// app.use(authRouter);
-// app.use(headerRouter);
+app.use(authRouter);
+app.use(urlRouter);
 // app.use(productRouter);
 // app.use(cartRouter);
 
 //open server
 app.listen(process.env.PORT, () =>
-  console.log(chalk.blue.bold("Server ON port " + process.env.PORT))
+  console.log("Server ON port " + process.env.PORT)
 );

@@ -29,16 +29,16 @@ export async function signIn(req, res) {
     const user = await db.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
-    if (findEmail.rowCount === 0) return res.sendStatus(401);
+    if (user.rowCount === 0) return res.sendStatus(401);
 
     if (bcrypt.compareSync(password, user.rows[0].password)) {
       const userData = { name: user.rows[0].name, email };
       const secretKey = process.env.JWT_SECRET;
       const token = jwt.sign(userData, secretKey, { expiresIn: 60 * 60 * 24 });
-      await db.query(
-        "INSERT INTO sessions(userId, date, token) VALUES ($1, $2, $3)",
-        [user.rows[0].id, new Date(), token]
-      );
+      await db.query(`INSERT INTO sessions("userId", token) VALUES ($1, $2)`, [
+        user.rows[0].id,
+        token,
+      ]);
       res.status(200).send(token);
     } else {
       return res.sendStatus(401);
