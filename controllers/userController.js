@@ -31,15 +31,23 @@ export async function getRanking(req, res) {
   try {
     const ranking =
       await db.query(`SELECT u.id, u.name, COUNT(l.id) AS "linksCount", SUM(l."visitCount") AS "visitCount" FROM users u
-  LEFT JOIN links l ON u.id = l."userId"
-  GROUP BY u.id
-  ORDER BY "visitCount" DESC NULLS LAST LIMIT 10`);
+    LEFT JOIN links l ON u.id = l."userId"
+    GROUP BY u.id
+    ORDER BY "visitCount" DESC NULLS LAST LIMIT 10`);
 
-    const resposta = ranking.map((index) => {
-      if (index.linkCount === 0) {
-        return { ...index, visitCount: 0 };
+    const resposta = ranking.rows.map((index) => {
+      if (index.visitCount === null) {
+        return {
+          ...index,
+          linksCount: parseInt(index.linksCount),
+          visitCount: 0,
+        };
       } else {
-        return { ...index };
+        return {
+          ...index,
+          linksCount: parseInt(index.linksCount),
+          visitCount: parseInt(index.visitCount),
+        };
       }
     });
 
